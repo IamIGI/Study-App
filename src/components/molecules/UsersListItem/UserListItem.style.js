@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { theme } from 'assets/styles/theme';
 
 export const Wrapper = styled.li`
     // styled.<html element>
