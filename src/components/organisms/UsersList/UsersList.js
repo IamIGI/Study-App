@@ -4,23 +4,28 @@ import UsersListItems from 'components/molecules/UsersListItem/UsersListItem';
 import { Wrapper } from './UserList.style';
 import { StyledList } from './UserList.style';
 
+//this. -> you use function/ argument from class
 class UsersList extends React.Component {
     state = {
-        isUsersList: false,
+        users,
     };
 
-    toggleListTitle = () => {
-        this.setState((prevState) => ({ isUsersList: !prevState.isUsersList }));
+    deleteUser = (name) => {
+        const filteredUsers = this.state.users.filter((user) => user.name !== name); //create new array with all the elements that pass the statement
+        this.setState({ users: filteredUsers });
+        console.log('Delete item');
     };
 
     render() {
         return (
             <Wrapper>
-                <h1>{this.state.isUsersList ? `User's list` : 'Students list'}</h1>
-                <button onClick={this.toggleListTitle}>Change title</button>
                 <StyledList>
-                    {users.map((userData) => (
-                        <UsersListItems key={userData.name} userData={userData} />
+                    {this.state.users.map((userData) => (
+                        <UsersListItems
+                            deleteUser={this.deleteUser}
+                            key={userData.name}
+                            userData={userData}
+                        />
                     ))}
                 </StyledList>
             </Wrapper>

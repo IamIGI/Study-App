@@ -16,9 +16,7 @@ const Wrapper = styled.div`
 
 const Root = () => (
     <ThemeProvider theme={theme}>
-        {' '}
-        {/* teleport for data */}
-        <GlobalStyle /> {/* When importing global styles, import on the begining !!! */}
+        <GlobalStyle /> {/* When importing global styles, import on the beginning !!! */}
         <Wrapper>
             <UsersList />
         </Wrapper>

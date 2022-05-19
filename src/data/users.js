@@ -5,32 +5,32 @@ const users = [
         average: '2.3',
     },
     {
-        name: 'Krzysztof Batko',
+        name: 'Marcin Gonciarz',
         attendance: '38%',
         average: '3.0',
     },
     {
-        name: 'Krzysztof Batko',
+        name: 'Agata Matko',
         attendance: '38%',
         average: '4.1',
     },
     {
-        name: 'Krzysztof Batko',
+        name: 'Klaudia Siemanko',
         attendance: '38%',
         average: '4.0',
     },
     {
-        name: 'Igor Kwaitek',
+        name: 'Igor Kwiatek',
         attendance: '38%',
         average: '2.3',
     },
     {
-        name: 'Marek Napier',
+        name: 'Marek Napiera',
         attendance: '38%',
         average: '3.1',
     },
     {
-        name: 'Krzysztof KNuth',
+        name: 'Ania KNuth',
         attendance: '38%',
         average: '4.4',
     },
