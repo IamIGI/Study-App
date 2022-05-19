@@ -1,26 +1,75 @@
 import UsersList from 'components/organisms/UsersList/UsersList';
-import React from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import { users as usersData } from 'data/users';
+import { ThemeProvider } from 'styled-components'; //use styles/theme.js everywhere you want
 import { GlobalStyle } from 'assets/styles/GlobalStyle';
 import { theme } from 'assets/styles/theme';
+import { Wrapper } from './Root.styles';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Form from 'components/organisms/Form/Form';
+import MainTemplate from 'components/templates/MainTemplate/MainTemplate';
 
-const Wrapper = styled.div`
-    background-color: ${({ theme }) => theme.colors.lightGrey};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 5% 0%;
-`;
+const initialFormState = {
+    name: '',
+    attendance: '',
+    average: '',
+};
 
-const Root = () => (
-    <ThemeProvider theme={theme}>
-        <GlobalStyle /> {/* When importing global styles, import on the beginning !!! */}
-        <Wrapper>
-            <UsersList />
-        </Wrapper>
-    </ThemeProvider>
-);
+const Root = () => {
+    const [users, setUsers] = useState(usersData);
+    const [formValues, setFormValue] = useState(initialFormState);
 
+    const deleteUser = (name) => {
+        const filteredUsers = users.filter((user) => user.name !== name); //create new array with all the elements that pass the statement
+        setUsers(filteredUsers);
+    };
+
+    const handleInputChange = (event) => {
+        console.log(formValues);
+        setFormValue({
+            ...formValues,
+            [event.target.name]: event.target.value,
+        });
+    };
+
+    const handleAddUser = (event) => {
+        event.preventDefault();
+
+        const newUser = {
+            name: formValues.name,
+            attendance: `${formValues.attendance}%`,
+            average: formValues.average,
+        };
+
+        setUsers([newUser, ...users]);
+        setFormValue(initialFormState);
+    };
+
+    return (
+        <BrowserRouter>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle /> {/* When importing global styles, import on the beginning !!! */}
+                <MainTemplate>
+                    <Wrapper>
+                        <Routes>
+                            {' '}
+                            {/* you refresh just that part of the application */}
+                            <Route path="/" element={<UsersList deleteUser={deleteUser} users={users} />} />
+                            <Route
+                                path="/add-user"
+                                element={
+                                    <Form
+                                        formValues={formValues}
+                                        handleAddUser={handleAddUser}
+                                        handleInputChange={handleInputChange}
+                                    />
+                                }
+                            />
+                        </Routes>
+                    </Wrapper>
+                </MainTemplate>
+            </ThemeProvider>
+        </BrowserRouter>
+    );
+};
 export default Root;

@@ -6,7 +6,7 @@ export const Wrapper = styled.li`
     align-items: center;
     position: relative;
     margin: 20px;
-    padding-bottom: 10px;
+    padding: 10px 0px;
 
     &:not(:last-child)::after {
         //every element without last
