@@ -17,7 +17,7 @@ class UsersList extends React.Component {
         return (
             <Wrapper>
                 <h1>{this.state.isUsersList ? `User's list` : 'Students list'}</h1>
-                <button onClick={() => this.setState.toggleListTitle}>Change title</button>
+                <button onClick={this.toggleListTitle}>Change title</button>
                 <StyledList>
                     {users.map((userData) => (
                         <UsersListItems key={userData.name} userData={userData} />
