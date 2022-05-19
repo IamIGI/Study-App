@@ -2,14 +2,9 @@ import React from 'react';
 import { ReactComponent as DeleteIcon } from 'assets/icons/delete-icon.svg'; //Imported icon is a ReactComponent
 import { StyledButton } from './Button.styles';
 
-//'click' - onClick
-//'mouseenter' - onMouseEnter
-
-const Button = (props) => {
+const Button = () => {
     return (
-        <StyledButton {...props}>
-            {' '}
-            {/* spread operator */}
+        <StyledButton>
             <DeleteIcon />
         </StyledButton>
     );
