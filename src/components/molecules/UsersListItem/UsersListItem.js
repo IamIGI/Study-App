@@ -11,7 +11,7 @@ const UsersListItems = ({ deleteUser, userData: { average, name, attendance = '0
             <p>{name}</p>
             <p>attendance: {attendance}</p>
         </StudentData>
-        <Button onclick={() => deleteUser(name)} />
+        <Button onClick={() => deleteUser(name)} />
     </Wrapper>
 );
 

@@ -1,14 +1,13 @@
-import React from 'react';
-import { users } from 'data/users';
+import React, { useState, useEffect } from 'react';
+import { users as usersData } from 'data/users';
 import UsersListItems from 'components/molecules/UsersListItem/UsersListItem';
 import { StyledList, Wrapper } from './UserList.style';
-import { toHaveAccessibleDescription, toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
 
 const mockAPI = (success) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            if (users) {
-                resolve([...users]);
+            if (usersData) {
+                resolve([...usersData]);
             } else {
                 reject({ message: 'Error' });
             }
@@ -16,52 +15,42 @@ const mockAPI = (success) => {
     });
 };
 
-//this. -> you use function/ argument from class
-class UsersList extends React.Component {
-    state = {
-        users: [],
-        isLoading: true,
-    };
+const UsersList = () => {
+    const [users, setUsers] = useState([]);
+    const [isLoading, setLoadingState] = useState(true);
 
-    //zachaczanie sie o poszczegolne etapy zycia naszego komponentu
-    componentDidMount() {
-        this.setState({ isLoading: true });
-        mockAPI()
+    //useEffect , first argument is a function, second is a table of dependencies
+    useEffect(() => {
+        setLoadingState(true);
+        mockAPI() //you get the usersData and then use is as a data in .then(given arg)
             .then((data) => {
-                this.setState({ isLoading: false });
-                this.setState({ users: data });
+                setLoadingState(false);
+                setUsers(data);
             })
             .catch((err) => console.log(err));
-    }
+    }, []); //you need to give empty table even when you don;t use it
+    //When you give empty table / array, the function will be called just once!!
 
-    componentDidUpdate(_, prevState) {
-        if (prevState.isLoading !== this.state.isLoading) {
-            console.log('Loading state has changed');
-        }
-    }
+    useEffect(() => {
+        // call function when the state of dependences (value form argument) change
+        console.log('Loading state has changed');
+    }, [isLoading]);
 
-    deleteUser = (name) => {
-        const filteredUsers = this.state.users.filter((user) => user.name !== name); //create new array with all the elements that pass the statement
-        this.setState({ users: filteredUsers });
-        console.log('Delete item');
+    const deleteUser = (name) => {
+        const filteredUsers = users.filter((user) => user.name !== name); //create new array with all the elements that pass the statement
+        setUsers(filteredUsers);
     };
 
-    render() {
-        return (
-            <Wrapper>
-                <h1>{this.state.isLoading ? 'Loading...' : 'Students list'}</h1>
-                <StyledList>
-                    {this.state.users.map((userData) => (
-                        <UsersListItems
-                            deleteUser={this.deleteUser}
-                            key={userData.name}
-                            userData={userData}
-                        />
-                    ))}
-                </StyledList>
-            </Wrapper>
-        );
-    }
-}
+    return (
+        <Wrapper>
+            <h1>{isLoading ? 'Loading...' : 'Students list'}</h1>
+            <StyledList>
+                {users.map((userData) => (
+                    <UsersListItems deleteUser={deleteUser} key={userData.name} userData={userData} />
+                ))}
+            </StyledList>
+        </Wrapper>
+    );
+};
 
 export default UsersList;
