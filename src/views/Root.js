@@ -8,6 +8,8 @@ import { Wrapper } from './Root.styles';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Form from 'components/organisms/Form/Form';
 import MainTemplate from 'components/templates/MainTemplate/MainTemplate';
+import AddUser from './AddUser';
+import DashBoard from './DashBoard';
 
 const initialFormState = {
     name: '',
@@ -54,17 +56,17 @@ const Root = () => {
                         <Routes>
                             {' '}
                             {/* you refresh just that part of the application */}
-                            <Route path="/" element={<UsersList deleteUser={deleteUser} users={users} />} />
                             <Route
                                 path="/add-user"
                                 element={
-                                    <Form
+                                    <AddUser
                                         formValues={formValues}
                                         handleAddUser={handleAddUser}
                                         handleInputChange={handleInputChange}
                                     />
                                 }
                             />
+                            <Route path="/" element={<DashBoard deleteUser={deleteUser} users={users} />} />
                         </Routes>
                     </Wrapper>
                 </MainTemplate>

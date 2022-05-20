@@ -10,14 +10,21 @@ const Navigation = () => {
                         Study <br /> App
                     </h1>
                 </Logo>
-                <StyledLink to="/">Home</StyledLink>
-                <StyledLink to="/add-user">Add user</StyledLink>
-                <StyledLink to="/settings">Settings</StyledLink>
-                <StyledLink to="/logout">Logout</StyledLink>
+                <StyledLink activeClassName="active" to="/">
+                    Dashboard
+                </StyledLink>
+                <StyledLink activeClassName="active" to="/add-user">
+                    Add user
+                </StyledLink>
+                <StyledLink activeClassName="active" to="/settings">
+                    Settings
+                </StyledLink>
+                <StyledLink activeClassName="active" to="/logout">
+                    Logout
+                </StyledLink>
             </Wrapper>
         </>
     );
 };
 
-Navigation.propTypes = {};
 export default Navigation;
