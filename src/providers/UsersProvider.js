@@ -12,7 +12,7 @@ const UsersProvider = ({ children }) => {
     const [users, setUsers] = useState(usersData);
 
     const deleteUser = (name) => {
-        const filteredUsers = users.filter((user) => user.name !== name); //create new array with all the elements that pass the statement
+        const filteredUsers = users.filter((user) => user.name !== name);
         setUsers(filteredUsers);
     };
 
@@ -27,18 +27,14 @@ const UsersProvider = ({ children }) => {
 
     return (
         <>
-            <UsersContext.Provider //wrap elements that will use context inside tags
+            <UsersContext.Provider
                 value={{
-                    // users: [],
-                    // handleAddUser: () => {},
-                    // deleteUser: () => {},
-                    //Instead you can write this like that:
                     users,
                     handleAddUser,
-                    deleteUser, //cuz you are using the same name
+                    deleteUser,
                 }}
             >
-                {children} {/* Render all the children that are between tags of this element 'UsersContext.Provider' */}
+                {children}
             </UsersContext.Provider>
         </>
     );

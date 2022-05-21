@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import propTypes from 'prop-types';
-
 import DeleteButton from 'components/atoms/DeleteButton/DeleteButton';
 import { Wrapper, Average, StudentData } from './UserListItem.style';
 import { UsersContext } from 'providers/UsersProvider';
