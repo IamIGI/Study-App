@@ -24,7 +24,7 @@ export const Average = styled.div`
         if (Number(average) >= 4) return theme.colors.success;
         if (Number(average) >= 3) return theme.colors.warning;
         if (Number(average) > 2) return theme.colors.error;
-        return theme.color.grey;
+        return theme.colors.grey;
     }};
 
     height: 34px;
