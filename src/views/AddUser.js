@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { ViewWrapper } from 'components/molecules/ViewWrapper/ViewWrapper';
 import { Title } from 'components/atoms/Title/Title';
 import FormField from 'components/molecules/FormField/FormField';
@@ -9,23 +9,57 @@ const initialFormState = {
     name: '',
     attendance: '',
     average: '',
+    consent: false,
+    error: '',
+};
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'INPUT CHANGE':
+            return {
+                ...state,
+                [action.field]: action.value,
+            };
+        case 'CLEAR VALUES':
+            return initialFormState;
+        case 'CONSENT TOGGLE':
+            return {
+                ...state,
+                consent: !state.consent,
+            };
+        case 'THROW ERROR':
+            return {
+                ...state,
+                error: action.errorValue,
+            };
+        default:
+            return state;
+    }
 };
 
 const AddUser = () => {
-    const [formValues, setFormValue] = useState(initialFormState);
+    const [formValues, dispatch] = useReducer(reducer, initialFormState); //useReducer(function, initialState)
     const { handleAddUser } = useContext(UsersContext); //declare from which context you want to download data
 
     const handleInputChange = (event) => {
-        setFormValue({
-            ...formValues,
-            [event.target.name]: event.target.value,
+        dispatch({
+            type: 'INPUT CHANGE',
+            field: event.target.name,
+            value: event.target.value,
         });
     };
 
     const handleSubmitUser = (event) => {
         event.preventDefault();
-        handleAddUser(formValues);
-        setFormValue(initialFormState);
+        console.log(formValues.consent);
+        if (formValues.consent) {
+            handleAddUser(formValues);
+            dispatch({
+                type: 'CLEAR VALUES',
+            });
+        } else {
+            dispatch({ type: 'THROW ERROR', errorValue: 'You need to check to consent checkbox' });
+        }
     };
 
     return (
@@ -47,7 +81,16 @@ const AddUser = () => {
                 value={formValues.average}
                 onChange={handleInputChange}
             />
+            <FormField
+                label="Consent"
+                id="average"
+                name="consent"
+                type="checkbox"
+                value={formValues.consent}
+                onChange={() => dispatch({ type: 'CONSENT TOGGLE' })}
+            />
             <Button type="submit">Add</Button>
+            {formValues.error && <p>{formValues.error}</p>}
         </ViewWrapper>
     );
 };
