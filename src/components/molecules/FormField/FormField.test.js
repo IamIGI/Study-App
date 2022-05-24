@@ -1,39 +1,11 @@
 import React, { useState } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
-const InputWithButton = () => {
-    const [inputValue, setInputValue] = useState('');
-
-    const handleInputChange = (e) => setInputValue(e.target.value);
-
-    return (
-        <>
-            <input
-                value={inputValue}
-                onChange={handleInputChange}
-                name="Name"
-                id="name"
-                placeholder="Enter your name"
-            />
-            <button disabled={!inputValue}>Submit</button>
-        </>
-    );
-};
+import FormField from './FormField';
+import { renderWithThemeProvider } from 'helpers/renderWithThemeProvider';
 
 describe('Input with button', () => {
     it('Renders the components', () => {
-        render(<InputWithButton />);
-        screen.getByText('Submit');
-    });
-
-    it('Properly handles value change', () => {
-        render(<InputWithButton />);
-        const input = screen.getByPlaceholderText('Enter your name');
-        const button = screen.getByText('Submit');
-        expect(button).toBeDisabled;
-        fireEvent.change(input, { target: { value: 'Igor' } });
-        expect(input).toHaveValue('Igor');
-        expect(button).not.toBeDisabled;
+        renderWithThemeProvider(<FormField label="name" name="name" id="name" />); // you render using this file
     });
 });
