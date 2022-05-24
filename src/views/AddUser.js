@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useReducer, useRef } from 'react';
+import React, { useContext } from 'react';
 import { ViewWrapper } from 'components/molecules/ViewWrapper/ViewWrapper';
 import { Title } from 'components/atoms/Title/Title';
 import FormField from 'components/molecules/FormField/FormField';
 import { Button } from 'components/atoms/Button/Button';
 import { UsersContext } from 'providers/UsersProvider';
-import { useWindowHeight } from 'hooks/useWindowSize';
+
+import { useForm } from 'hooks/useForm';
 
 const initialFormState = {
     name: '',
@@ -14,68 +15,18 @@ const initialFormState = {
     error: '',
 };
 
-const actionTypes = {
-    inputChange: 'INPUT CHANGE',
-    clearValues: 'CLEAR VALUES',
-    consentToggle: 'CONSENT TOGGLE',
-    throwError: 'THROW ERROR',
-};
-
-const reducer = (state, action) => {
-    switch (action.type) {
-        case actionTypes.inputChange:
-            return {
-                ...state,
-                [action.field]: action.value,
-            };
-        case actionTypes.clearValues:
-            return initialFormState;
-        case actionTypes.consentToggle:
-            return {
-                ...state,
-                consent: !state.consent,
-            };
-        case actionTypes.throwError:
-            return {
-                ...state,
-                error: action.errorValue,
-            };
-        default:
-            return state;
-    }
-};
-
 const AddUser = () => {
-    const [formValues, dispatch] = useReducer(reducer, initialFormState); //useReducer(function, initialState)
     const { handleAddUser } = useContext(UsersContext); //declare from which context you want to download data
-    const dimensions = useWindowHeight();
-
-    const ref = useRef(null);
-
-    useEffect(() => {
-        if (ref.current) {
-            ref.current.focus();
-        }
-    }, []);
-
-    const handleInputChange = (event) => {
-        dispatch({
-            type: 'INPUT CHANGE',
-            field: event.target.name,
-            value: event.target.value,
-        });
-    };
+    const { formValues, handleInputChange, handleClearForm, handleThrowError, handleToggleConsent } =
+        useForm(initialFormState);
 
     const handleSubmitUser = (event) => {
         event.preventDefault();
-        console.log(formValues.consent);
         if (formValues.consent) {
             handleAddUser(formValues);
-            dispatch({
-                type: 'CLEAR VALUES',
-            });
+            handleClearForm(initialFormState);
         } else {
-            dispatch({ type: 'THROW ERROR', errorValue: 'You need to check to consent checkbox' });
+            handleThrowError('You need to give consent');
         }
     };
 
@@ -83,17 +34,7 @@ const AddUser = () => {
         <ViewWrapper as="form" onSubmit={handleSubmitUser}>
             {/*div as form */}
             <Title>Add new students</Title>
-            <Title>
-                Screen width: {dimensions.width}px <br /> Screen height: {dimensions.height}px
-            </Title>
-            <FormField
-                ref={ref} //ref is a special name/method
-                label="Name"
-                id="name"
-                name="name"
-                value={formValues.name}
-                onChange={handleInputChange}
-            />
+            <FormField label="Name" id="name" name="name" value={formValues.name} onChange={handleInputChange} />
             <FormField
                 label="Attendance"
                 id="attendance"
@@ -114,7 +55,7 @@ const AddUser = () => {
                 name="consent"
                 type="checkbox"
                 value={formValues.consent}
-                onChange={() => dispatch({ type: 'CONSENT TOGGLE' })}
+                onChange={handleToggleConsent}
             />
             <Button type="submit">Add</Button>
             {formValues.error && <p>{formValues.error}</p>}
