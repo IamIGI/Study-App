@@ -1,31 +1,33 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { ViewWrapper } from 'components/molecules/ViewWrapper/ViewWrapper';
 import { Title } from 'components/atoms/Title/Title';
 import FormField from 'components/molecules/FormField/FormField';
 import { Button } from 'components/atoms/Button/Button';
 import { UsersContext } from 'providers/UsersProvider';
 
+import { useForm } from 'hooks/useForm';
+
 const initialFormState = {
     name: '',
     attendance: '',
     average: '',
+    consent: false,
+    error: '',
 };
 
 const AddUser = () => {
-    const [formValues, setFormValue] = useState(initialFormState);
     const { handleAddUser } = useContext(UsersContext); //declare from which context you want to download data
-
-    const handleInputChange = (event) => {
-        setFormValue({
-            ...formValues,
-            [event.target.name]: event.target.value,
-        });
-    };
+    const { formValues, handleInputChange, handleClearForm, handleThrowError, handleToggleConsent } =
+        useForm(initialFormState);
 
     const handleSubmitUser = (event) => {
         event.preventDefault();
-        handleAddUser(formValues);
-        setFormValue(initialFormState);
+        if (formValues.consent) {
+            handleAddUser(formValues);
+            handleClearForm(initialFormState);
+        } else {
+            handleThrowError('You need to give consent');
+        }
     };
 
     return (
@@ -47,7 +49,16 @@ const AddUser = () => {
                 value={formValues.average}
                 onChange={handleInputChange}
             />
+            <FormField
+                label="Consent"
+                id="average"
+                name="consent"
+                type="checkbox"
+                value={formValues.consent}
+                onChange={handleToggleConsent}
+            />
             <Button type="submit">Add</Button>
+            {formValues.error && <p>{formValues.error}</p>}
         </ViewWrapper>
     );
 };

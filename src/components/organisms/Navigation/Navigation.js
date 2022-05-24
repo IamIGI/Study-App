@@ -10,16 +10,16 @@ const Navigation = () => {
                         Study <br /> App
                     </h1>
                 </Logo>
-                <StyledLink activeClassName="active" to="/">
+                <StyledLink active_class_name="active" to="/">
                     Dashboard
                 </StyledLink>
-                <StyledLink activeClassName="active" to="/add-user">
+                <StyledLink active_class_name="active" to="/add-user">
                     Add user
                 </StyledLink>
-                <StyledLink activeClassName="active" to="/settings">
+                <StyledLink active_class_name="active" to="/settings">
                     Settings
                 </StyledLink>
-                <StyledLink activeClassName="active" to="/logout">
+                <StyledLink active_class_name="active" to="/logout">
                     Logout
                 </StyledLink>
             </Wrapper>
