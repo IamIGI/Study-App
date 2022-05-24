@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useRef } from 'react';
 import { ViewWrapper } from 'components/molecules/ViewWrapper/ViewWrapper';
 import { Title } from 'components/atoms/Title/Title';
 import FormField from 'components/molecules/FormField/FormField';
@@ -13,21 +13,28 @@ const initialFormState = {
     error: '',
 };
 
+const actionTypes = {
+    inputChange: 'INPUT CHANGE',
+    clearValues: 'CLEAR VALUES',
+    consentToggle: 'CONSENT TOGGLE',
+    throwError: 'THROW ERROR',
+};
+
 const reducer = (state, action) => {
     switch (action.type) {
-        case 'INPUT CHANGE':
+        case actionTypes.inputChange:
             return {
                 ...state,
                 [action.field]: action.value,
             };
-        case 'CLEAR VALUES':
+        case actionTypes.clearValues:
             return initialFormState;
-        case 'CONSENT TOGGLE':
+        case actionTypes.consentToggle:
             return {
                 ...state,
                 consent: !state.consent,
             };
-        case 'THROW ERROR':
+        case actionTypes.throwError:
             return {
                 ...state,
                 error: action.errorValue,
@@ -40,6 +47,13 @@ const reducer = (state, action) => {
 const AddUser = () => {
     const [formValues, dispatch] = useReducer(reducer, initialFormState); //useReducer(function, initialState)
     const { handleAddUser } = useContext(UsersContext); //declare from which context you want to download data
+    const ref = useRef(null);
+
+    useEffect(() => {
+        if (ref.current) {
+            ref.current.focus();
+        }
+    }, []);
 
     const handleInputChange = (event) => {
         dispatch({
@@ -66,7 +80,14 @@ const AddUser = () => {
         <ViewWrapper as="form" onSubmit={handleSubmitUser}>
             {/*div as form */}
             <Title>Add new students</Title>
-            <FormField label="Name" id="name" name="name" value={formValues.name} onChange={handleInputChange} />
+            <FormField
+                ref={ref} //ref is a special name/method
+                label="Name"
+                id="name"
+                name="name"
+                value={formValues.name}
+                onChange={handleInputChange}
+            />
             <FormField
                 label="Attendance"
                 id="attendance"
