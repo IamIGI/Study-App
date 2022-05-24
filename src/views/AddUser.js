@@ -4,6 +4,7 @@ import { Title } from 'components/atoms/Title/Title';
 import FormField from 'components/molecules/FormField/FormField';
 import { Button } from 'components/atoms/Button/Button';
 import { UsersContext } from 'providers/UsersProvider';
+import { useWindowHeight } from 'hooks/useWindowSize';
 
 const initialFormState = {
     name: '',
@@ -47,6 +48,8 @@ const reducer = (state, action) => {
 const AddUser = () => {
     const [formValues, dispatch] = useReducer(reducer, initialFormState); //useReducer(function, initialState)
     const { handleAddUser } = useContext(UsersContext); //declare from which context you want to download data
+    const dimensions = useWindowHeight();
+
     const ref = useRef(null);
 
     useEffect(() => {
@@ -80,6 +83,9 @@ const AddUser = () => {
         <ViewWrapper as="form" onSubmit={handleSubmitUser}>
             {/*div as form */}
             <Title>Add new students</Title>
+            <Title>
+                Screen width: {dimensions.width}px <br /> Screen height: {dimensions.height}px
+            </Title>
             <FormField
                 ref={ref} //ref is a special name/method
                 label="Name"
