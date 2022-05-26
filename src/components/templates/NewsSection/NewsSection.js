@@ -35,7 +35,7 @@ const NewsSection = () => {
                 setArticles(data.allArticles);
             })
             .catch((err) => console.log(err));
-    });
+    }, []); //remember about table dependencies, other wise you will get inside of use effect running in circle
 
     return (
         <>

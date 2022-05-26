@@ -51,7 +51,7 @@ const AddUser = () => {
             />
             <FormField
                 label="Consent"
-                id="average"
+                id="consent"
                 name="consent"
                 type="checkbox"
                 value={formValues.consent}
