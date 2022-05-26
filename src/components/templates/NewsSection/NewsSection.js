@@ -43,7 +43,7 @@ const NewsSection = () => {
                 <NewsSectionHeader> University news feed</NewsSectionHeader>
                 {articles.length > 0 ? (
                     articles.map(({ title, category, content, image = null }) => (
-                        <ArticleWrapper>
+                        <ArticleWrapper key={id}>
                             <TitleWrapper>
                                 <h3>{title}</h3>
                                 <p>{category}</p>
