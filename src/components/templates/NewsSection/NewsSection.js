@@ -3,6 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'components/atoms/Button/Button';
 import axios from 'axios';
 
+export const query = `
+{
+    allArticles{
+      id
+      title
+      category
+      content
+      image{
+        url
+      }
+    }
+  }`;
+
 const NewsSection = () => {
     const [articles, setArticles] = useState([]);
 
@@ -12,18 +25,7 @@ const NewsSection = () => {
             .post(
                 'https://graphql.datocms.com/',
                 {
-                    query: `
-                {
-                    allArticles{
-                      id
-                      title
-                      category
-                      content
-                      image{
-                        url
-                      }
-                    }
-                  }`,
+                    query,
                 },
                 {
                     headers: {
@@ -42,7 +44,7 @@ const NewsSection = () => {
             <Wrapper>
                 <NewsSectionHeader> University news feed</NewsSectionHeader>
                 {articles.length > 0 ? (
-                    articles.map(({ title, category, content, image = null }) => (
+                    articles.map(({ id, title, category, content, image = null }) => (
                         <ArticleWrapper key={id}>
                             <TitleWrapper>
                                 <h3>{title}</h3>
